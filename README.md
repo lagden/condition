@@ -16,7 +16,7 @@
 [xo]:              https://github.com/sindresorhus/xo
 
 
-Create conditional for data.
+Create conditional to validate data.
 
 
 ## Install

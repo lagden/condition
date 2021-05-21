@@ -1,7 +1,7 @@
 {
   "name": "@tadashi/condition",
   "version": "1.0.0",
-  "description": "Create conditional for data.",
+  "description": "Create conditional to validate data.",
   "main": "src/condition.js",
   "type": "module",
   "files": [
@@ -41,7 +41,6 @@
     "eslint": "7.26.0",
     "eslint-config-xo": "0.36.0",
     "eslint-plugin-html": "6.1.2",
-    "eslint-plugin-svelte3": "3.2.0",
     "eslint-plugin-unicorn": "32.0.1"
   },
   "babel": {
