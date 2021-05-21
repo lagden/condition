@@ -36,9 +36,9 @@ import 'condition' from '@tadashi/condition'
 const data = {
   age: 65,
   gender: 'F',
-  hasCar: true,
   city: 'São Paulo',
-  country: 'Brasil'
+  hasCar: true,
+  colors: ['red', 'blue']
 }
 
 const conditions = [
@@ -59,11 +59,11 @@ const conditions = [
           {
             field: 'city',
             operator: 'assigned',
-            value: true
+            value: false
           }, {
-            field: 'country',
+            field: 'colors',
             operator: 'intersection',
-            value: ['Brasil', 'Japan']
+            value: ['blue', 'green']
           }
         ]
       }, {

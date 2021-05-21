@@ -3,14 +3,12 @@ import condition from '../src/condition.js'
 import {intersection} from '../src/helper.js'
 
 const data = {
-	tipo_pessoa: 'PF',
 	age: 65,
-	sexo: 'F',
-	aposentada: true,
-	foo: 'bar',
-	eu: 'vc',
+	gender: 'F',
+	city: 'São Paulo',
+	country: 'Brazil',
 	hasCar: true,
-	cidade: 'São Paulo'
+	colors: ['red', 'blue']
 }
 
 const conditions = [
@@ -18,9 +16,9 @@ const conditions = [
 		join_operator: 'and',
 		args: [
 			{
-				field: 'tipo_pessoa',
+				field: 'gender',
 				operator: 'eq',
-				value: 'PF'
+				value: 'F'
 			}, {
 				field: 'age',
 				operator: 'gt',
@@ -29,32 +27,23 @@ const conditions = [
 				join_operator: 'or',
 				args: [
 					{
-						field: 'sexo',
-						operator: 'eq',
-						value: 'F'
+						field: 'city',
+						operator: 'assigned',
+						value: false
 					}, {
-						field: 'aposentada',
-						operator: 'eq',
-						value: true
-					}, {
-						join_operator: 'and',
-						args: [
-							{
-								field: 'foo',
-								operator: 'eq',
-								value: 'bar'
-							}, {
-								field: 'eu',
-								operator: 'ne',
-								value: 'vc'
-							}
-						]
+						field: 'country',
+						operator: 'intersection',
+						value: ['Japan', 'Brazil']
 					}
 				]
 			}, {
 				field: 'hasCar',
 				operator: 'eq',
 				value: true
+			}, {
+				field: 'colors',
+				operator: 'intersection',
+				value: ['blue', 'green', 123]
 			}
 		]
 	}
@@ -65,22 +54,9 @@ const condition_intersection = [
 		join_operator: '',
 		args: [
 			{
-				field: 'cidade',
+				field: 'colors',
 				operator: 'intersection',
-				value: ['Aparecida', 'Lorena', 123]
-			}
-		]
-	}
-]
-
-const condition_intersection_other = [
-	{
-		join_operator: '',
-		args: [
-			{
-				field: 'cidade',
-				operator: 'intersection',
-				value: ['São Paulo', 'Campinas']
+				value: ['yellow', 'green']
 			}
 		]
 	}
@@ -91,9 +67,9 @@ const condition_assigned = [
 		join_operator: '',
 		args: [
 			{
-				field: 'uf',
+				field: 'state',
 				operator: 'assigned',
-				value: true
+				value: 'true'
 			}
 		]
 	}
@@ -104,20 +80,7 @@ const condition_assigned_other = [
 		join_operator: '',
 		args: [
 			{
-				field: 'cidade',
-				operator: 'assigned',
-				value: 'true'
-			}
-		]
-	}
-]
-
-const condition_intersection_other_more = [
-	{
-		join_operator: '',
-		args: [
-			{
-				field: 'cidade',
+				field: 'city',
 				operator: 'assigned',
 				value: '1'
 			}
@@ -138,36 +101,22 @@ const condition_wrong_operator = [
 	}
 ]
 
-test('condition', t => {
+test('conditions', t => {
 	const fn = condition(conditions)
 	const response = fn(data)
 	t.true(response)
 })
 
-// Verifica se contem
 test('condition_intersection', t => {
 	const fn = condition(condition_intersection)
 	const response = fn(data)
 	t.false(response)
 })
 
-test('condition_intersection_other', t => {
-	const fn = condition(condition_intersection_other)
-	const response = fn(data)
-	t.true(response)
-})
-
-test('condition_intersection_other_more', t => {
-	const fn = condition(condition_intersection_other_more)
-	const response = fn(data)
-	t.true(response)
-})
-
 test('intersection', t => {
 	t.true(intersection('tadashi', ['tadashi', 'takamoto']))
 })
 
-// Verifica se o campo já foi preenchido
 test('condition_assigned', t => {
 	const fn = condition(condition_assigned)
 	const response = fn(data)
