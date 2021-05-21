@@ -1,0 +1,40 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [main]
+
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - run: yarn set version berry
+      - run: >
+          echo 'nodeLinker: node-modules' >> .yarnrc.yml
+      - run: ls -la
+      - run: cat .yarnrc.yml
+      - run: yarn install
+      - run: npm test
+        env:
+          CI: true
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,62 @@
+{
+  "name": "@tadashi/condition",
+  "version": "1.0.0",
+  "description": "Create conditional for data.",
+  "main": "src/condition.js",
+  "type": "module",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "src"
+  ],
+  "author": "Thiago Lagden",
+  "license": "MIT",
+  "homepage": "https://github.com/lagden/condition#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/lagden/condition.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lagden/condition/issues"
+  },
+  "keywords": [
+    "condition",
+    "lib"
+  ],
+  "engines": {
+    "node": ">=14.16"
+  },
+  "scripts": {
+    "eslint": "eslint --config .eslintrc.cjs --ext .js --ignore-path .gitignore .",
+    "pretest": "npm run eslint",
+    "test": "c8 --reporter=text --reporter=lcov ava"
+  },
+  "devDependencies": {
+    "@babel/core": "7.14.3",
+    "@babel/eslint-parser": "7.14.3",
+    "@babel/plugin-syntax-top-level-await": "7.12.13",
+    "@babel/preset-env": "7.14.2",
+    "ava": "3.15.0",
+    "c8": "7.7.2",
+    "eslint": "7.26.0",
+    "eslint-config-xo": "0.36.0",
+    "eslint-plugin-html": "6.1.2",
+    "eslint-plugin-svelte3": "3.2.0",
+    "eslint-plugin-unicorn": "32.0.1"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ]
+    ],
+    "plugins": [
+      "@babel/plugin-syntax-top-level-await"
+    ]
+  }
+}
