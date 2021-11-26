@@ -27,35 +27,18 @@
     "node": ">=14.16"
   },
   "scripts": {
-    "eslint": "eslint --config .eslintrc.cjs --ext .js --ignore-path .gitignore .",
+    "eslint": "eslint --config .eslintrc.yml --ext .js --ignore-path .gitignore .",
     "pretest": "npm run eslint",
-    "test": "c8 --reporter=text --reporter=lcov ava"
+    "test": "c8 --reporter=text --reporter=text-summary --reporter=lcov ava --tap"
   },
   "devDependencies": {
-    "@babel/core": "7.14.3",
-    "@babel/eslint-parser": "7.14.3",
-    "@babel/plugin-syntax-top-level-await": "7.12.13",
-    "@babel/preset-env": "7.14.2",
+    "@babel/core": "7.16.0",
+    "@babel/eslint-parser": "7.16.3",
     "ava": "3.15.0",
-    "c8": "7.7.2",
-    "eslint": "7.26.0",
-    "eslint-config-xo": "0.36.0",
-    "eslint-plugin-html": "6.1.2",
-    "eslint-plugin-unicorn": "32.0.1"
+    "c8": "7.10.0",
+    "eslint": "8.3.0",
+    "eslint-config-xo": "0.39.0",
+    "eslint-plugin-unicorn": "39.0.0"
   },
-  "babel": {
-    "presets": [
-      [
-        "@babel/preset-env",
-        {
-          "targets": {
-            "node": "current"
-          }
-        }
-      ]
-    ],
-    "plugins": [
-      "@babel/plugin-syntax-top-level-await"
-    ]
-  }
+  "babel": {}
 }

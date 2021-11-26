@@ -8,7 +8,7 @@ const data = {
 	city: 'São Paulo',
 	country: 'Brazil',
 	hasCar: true,
-	colors: ['red', 'blue']
+	colors: ['red', 'blue'],
 }
 
 const conditions = [
@@ -18,35 +18,35 @@ const conditions = [
 			{
 				field: 'gender',
 				operator: 'eq',
-				value: 'F'
+				value: 'F',
 			}, {
 				field: 'age',
 				operator: 'gt',
-				value: 21
+				value: 21,
 			}, {
 				join_operator: 'or',
 				args: [
 					{
 						field: 'city',
 						operator: 'assigned',
-						value: false
+						value: false,
 					}, {
 						field: 'country',
 						operator: 'intersection',
-						value: ['Japan', 'Brazil']
-					}
-				]
+						value: ['Japan', 'Brazil'],
+					},
+				],
 			}, {
 				field: 'hasCar',
 				operator: 'eq',
-				value: true
+				value: true,
 			}, {
 				field: 'colors',
 				operator: 'intersection',
-				value: ['blue', 'green', 123]
-			}
-		]
-	}
+				value: ['blue', 'green', 123],
+			},
+		],
+	},
 ]
 
 const condition_intersection = [
@@ -56,10 +56,10 @@ const condition_intersection = [
 			{
 				field: 'colors',
 				operator: 'intersection',
-				value: ['yellow', 'green']
-			}
-		]
-	}
+				value: ['yellow', 'green'],
+			},
+		],
+	},
 ]
 
 const condition_assigned = [
@@ -69,10 +69,10 @@ const condition_assigned = [
 			{
 				field: 'state',
 				operator: 'assigned',
-				value: 'true'
-			}
-		]
-	}
+				value: 'true',
+			},
+		],
+	},
 ]
 
 const condition_assigned_other = [
@@ -82,10 +82,10 @@ const condition_assigned_other = [
 			{
 				field: 'city',
 				operator: 'assigned',
-				value: '1'
-			}
-		]
-	}
+				value: '1',
+			},
+		],
+	},
 ]
 
 const condition_wrong_operator = [
@@ -95,10 +95,10 @@ const condition_wrong_operator = [
 			{
 				field: 'uf',
 				operator: 'wrong',
-				value: true
-			}
-		]
-	}
+				value: true,
+			},
+		],
+	},
 ]
 
 test('conditions', t => {
