@@ -1,7 +1,3 @@
-function _toArray(v) {
-	return Array.isArray(v) ? v : [v]
-}
-
 /**
  * Helper intersection
  * @param {Array<string, number, boolean>} v1 - Array com valores primitivos
@@ -9,6 +5,7 @@ function _toArray(v) {
  * @return {boolean} Retorna verdadeiro se existir o mesmo elemento no v1 e v2
  */
 export function intersection(v1, v2) {
+	const _toArray = v => Array.isArray(v) ? v : [v]
 	const a = new Set(_toArray(v1))
 	const b = new Set(_toArray(v2))
 	const _intersection = new Set([...a].filter(x => b.has(x)))

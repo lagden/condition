@@ -37,6 +37,7 @@ rules:
   unicorn/prevent-abbreviations: off
   unicorn/no-reduce: off
   unicorn/no-array-reduce: off
+  unicorn/consistent-function-scoping: off
   # unicorn/no-abusive-eslint-disable: off
   # Bug no ctx.body Koa
   require-atomic-updates: off
