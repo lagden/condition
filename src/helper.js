@@ -9,7 +9,7 @@ export function intersection(v1, v2) {
 	const a = new Set(_toArray(v1))
 	const b = new Set(_toArray(v2))
 	const _intersection = new Set([...a].filter(x => b.has(x)))
-	return [..._intersection.values()].length > 0
+	return _intersection.size > 0
 }
 
 /**
