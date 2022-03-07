@@ -24,3 +24,20 @@ export function parseBooleans(v) {
 	}
 	return v
 }
+
+/**
+ * Helper regex
+ * @param {string} v - valor primitivo
+ * @param {Regex} pattern - expressão regular
+ * @return {boolean} Retorna verdadeiro se existir passar no test
+ */
+export function regex(v, pattern) {
+	try {
+		const _regex = pattern instanceof RegExp ? pattern : new Function(undefined, `return ${pattern}`)()
+		if (_regex instanceof RegExp) {
+			return _regex.test(v)
+		}
+	} catch {
+		return false
+	}
+}

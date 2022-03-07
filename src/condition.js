@@ -1,4 +1,8 @@
-import {intersection, parseBooleans} from './helper.js'
+import {
+	intersection,
+	parseBooleans,
+	regex,
+} from './helper.js'
 
 /**
  * Mapa dos operadores lógico
@@ -15,6 +19,7 @@ mapOperators.set('and', '&&')
 mapOperators.set('or', '||')
 mapOperators.set('assigned', 'assigned')
 mapOperators.set('intersection', intersection)
+mapOperators.set('regex', regex)
 
 /**
  * Helper para montar a condição
@@ -36,6 +41,11 @@ function _conditional(field, value, operator) {
 	if (operator === 'assigned') {
 		const v = typeof value === 'string' ? parseBooleans(value) : value
 		return `(data['${field}'] !== undefined) === ${v}`
+	}
+
+	if (operator === 'regex') {
+		const v = typeof value === 'string' ? `'${value}'` : value
+		return `${_operator}(data['${field}'], ${v})`
 	}
 
 	const v = typeof value === 'string' ? `'${value}'` : value

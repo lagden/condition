@@ -37,8 +37,10 @@ const data = {
   age: 65,
   gender: 'F',
   city: 'São Paulo',
+  country: 'Brazil',
+  phone: '(11) 988889999',
   hasCar: true,
-  colors: ['red', 'blue']
+  colors: ['red', 'blue'],
 }
 
 const conditions = [
@@ -48,31 +50,39 @@ const conditions = [
       {
         field: 'gender',
         operator: 'eq',
-        value: 'F'
+        value: 'F',
       }, {
         field: 'age',
         operator: 'gt',
-        value: 21
+        value: 21,
+      }, {
+        field: 'phone',
+        operator: 'regex',
+        value: /\(\d{2}\)\s(\d{8,9})/i,
       }, {
         join_operator: 'or',
         args: [
           {
             field: 'city',
             operator: 'assigned',
-            value: false
+            value: false,
           }, {
-            field: 'colors',
+            field: 'country',
             operator: 'intersection',
-            value: ['blue', 'green']
-          }
-        ]
+            value: ['Japan', 'Brazil'],
+          },
+        ],
       }, {
         field: 'hasCar',
         operator: 'eq',
-        value: true
-      }
-    ]
-  }
+        value: true,
+      }, {
+        field: 'colors',
+        operator: 'intersection',
+        value: ['blue', 'green', 123],
+      },
+    ],
+  },
 ]
 
 const isValid = condition(conditions)

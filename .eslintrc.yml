@@ -33,6 +33,8 @@ rules:
   padding-line-between-statements: off
   no-undef-init: off
   no-new-func: off
+  # no-unused-vars: off
+  # no-useless-escape: off
   unicorn/filename-case: off
   unicorn/prevent-abbreviations: off
   unicorn/no-reduce: off

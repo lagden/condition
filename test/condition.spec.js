@@ -1,12 +1,13 @@
 import test from 'ava'
 import condition from '../src/condition.js'
-import {intersection} from '../src/helper.js'
+import {intersection, regex} from '../src/helper.js'
 
 const data = {
 	age: 65,
 	gender: 'F',
 	city: 'São Paulo',
 	country: 'Brazil',
+	phone: '(11) 988889999',
 	hasCar: true,
 	colors: ['red', 'blue'],
 }
@@ -23,6 +24,14 @@ const conditions = [
 				field: 'age',
 				operator: 'gt',
 				value: 21,
+			}, {
+				field: 'phone',
+				operator: 'regex',
+				value: /\(\d{2}\)\s(\d{8,9})/i,
+			}, {
+				field: 'phone',
+				operator: 'regex',
+				value: '/\\\\(\\\\d{2}\\\\)\\\\s(\\\\d{8,9})/i',
 			}, {
 				join_operator: 'or',
 				args: [
@@ -127,6 +136,14 @@ test('condition_assigned_other', t => {
 	const fn = condition(condition_assigned_other)
 	const response = fn(data)
 	t.true(response)
+})
+
+test('regex', t => {
+	t.true(regex('tadashi', /tadashi/i))
+	t.true(regex('tadashi', '/tadashi/i'))
+	t.false(regex('tadashi', 'tadashi'))
+	t.true(regex('(11) 988889999', '/\\(\\d{2}\\)\\s(\\d{8,9})/i'))
+	t.true(regex('(11) 988889999', /\(\d{2}\)\s(\d{8,9})/i))
 })
 
 test('condition_wrong_operator', t => {
