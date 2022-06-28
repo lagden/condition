@@ -34,6 +34,7 @@ rules:
   no-undef-init: off
   no-new-func: off
   no-constant-binary-expression: off
+  unicorn/consistent-function-scoping: off
   unicorn/filename-case: off
   unicorn/prevent-abbreviations: off
   unicorn/no-reduce: off
