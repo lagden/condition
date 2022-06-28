@@ -1,6 +1,6 @@
 import test from 'ava'
 import condition from '../src/condition.js'
-import {intersection, regex} from '../src/helper.js'
+import {intersection, regex, arrayEquals} from '../src/helper.js'
 
 const data = {
 	age: 65,
@@ -110,6 +110,32 @@ const condition_wrong_operator = [
 	},
 ]
 
+const condition_array_equals = [
+	{
+		join_operator: '',
+		args: [
+			{
+				field: 'colors',
+				operator: 'arrayEquals',
+				value: ['red', 'blue'],
+			},
+		],
+	},
+]
+
+const condition_array_equals_false = [
+	{
+		join_operator: '',
+		args: [
+			{
+				field: 'colors',
+				operator: 'arrayEquals',
+				value: ['red'],
+			},
+		],
+	},
+]
+
 test('conditions', t => {
 	const fn = condition(conditions)
 	const response = fn(data)
@@ -138,12 +164,30 @@ test('condition_assigned_other', t => {
 	t.true(response)
 })
 
+test('condition_arrayEquals', t => {
+	const fn = condition(condition_array_equals)
+	const response = fn(data)
+	t.true(response)
+})
+
+test('condition_arrayEquals_false', t => {
+	const fn = condition(condition_array_equals_false)
+	const response = fn(data)
+	t.false(response)
+})
+
 test('regex', t => {
 	t.true(regex('tadashi', /tadashi/i))
 	t.true(regex('tadashi', '/tadashi/i'))
 	t.false(regex('tadashi', 'tadashi'))
 	t.true(regex('(11) 988889999', '/\\(\\d{2}\\)\\s(\\d{8,9})/i'))
 	t.true(regex('(11) 988889999', /\(\d{2}\)\s(\d{8,9})/i))
+})
+
+test('arrayEquals', t => {
+	t.false(arrayEquals('tadashi', ['tadashi']))
+	t.false(arrayEquals(['tadashi'], 'tadashi'))
+	t.false(arrayEquals(['tadashi'], ['tadashii']))
 })
 
 test('condition_wrong_operator', t => {

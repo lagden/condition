@@ -2,6 +2,7 @@ import {
 	intersection,
 	parseBooleans,
 	regex,
+	arrayEquals,
 } from './helper.js'
 
 /**
@@ -20,6 +21,7 @@ mapOperators.set('or', '||')
 mapOperators.set('assigned', 'assigned')
 mapOperators.set('intersection', intersection)
 mapOperators.set('regex', regex)
+mapOperators.set('arrayEquals', arrayEquals)
 
 /**
  * Helper para montar a condição
@@ -30,7 +32,7 @@ mapOperators.set('regex', regex)
  */
 function _conditional(field, value, operator) {
 	const _operator = mapOperators.get(operator)
-	if (Array.isArray(value) && operator === 'intersection') {
+	if (Array.isArray(value) && ['intersection', 'arrayEquals'].includes(operator)) {
 		const result = []
 		for (const element of value) {
 			result.push(typeof element === 'string' ? `'${element}'` : `${element}`)

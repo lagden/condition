@@ -80,6 +80,10 @@ const conditions = [
         field: 'colors',
         operator: 'intersection',
         value: ['blue', 'green', 123],
+      }, {
+        field: 'colors',
+        operator: 'arrayEquals',
+        value: ['red', 'blue'],
       },
     ],
   },
