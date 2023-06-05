@@ -3,13 +3,12 @@
 [![NPM version][npm-img]][npm]
 [![Node.js CI][ci-img]][ci]
 [![Coverage Status][coveralls-img]][coveralls]
-
 [![XO code style][xo-img]][xo]
 
 [npm-img]:         https://img.shields.io/npm/v/@tadashi/condition.svg
 [npm]:             https://www.npmjs.com/package/@tadashi/condition
-[ci-img]:          https://github.com/lagden/condition/workflows/Node.js%20CI/badge.svg
-[ci]:              https://github.com/lagden/condition/actions?query=workflow%3A%22Node.js+CI%22
+[ci-img]:          https://github.com/lagden/condition/actions/workflows/nodejs.yml/badge.svg
+[ci]:              https://github.com/lagden/condition/actions/workflows/nodejs.yml
 [coveralls-img]:   https://coveralls.io/repos/github/lagden/condition/badge.svg?branch=main
 [coveralls]:       https://coveralls.io/github/lagden/condition?branch=main
 [xo-img]:          https://img.shields.io/badge/code_style-XO-5ed9c7.svg
@@ -22,7 +21,7 @@ Create conditional to validate data.
 ## Install
 
 ```
-$ npm i -S @tadashi/condition
+$ npm i @tadashi/condition
 ```
 
 
@@ -92,6 +91,11 @@ const conditions = [
 const isValid = condition(conditions)
 isValid(data) // => true
 ```
+
+
+## Donate ❤️
+
+BTC: bc1q7famhuj5f25n6qvlm3sssnymk2qpxrfwpyq7g4
 
 
 ## License
