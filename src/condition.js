@@ -9,6 +9,7 @@ import {
 	intersection,
 	arrayEquals,
 	regex,
+	length,
 } from './helper.js'
 
 /**
@@ -25,6 +26,7 @@ mapOperators.set('le', le)
 mapOperators.set('intersection', intersection)
 mapOperators.set('arrayEquals', arrayEquals)
 mapOperators.set('regex', regex)
+mapOperators.set('length', length)
 mapOperators.set('assigned', 'assigned')
 
 /**
@@ -43,6 +45,7 @@ function _conditional(args) {
 		value,
 		operator,
 		flag,
+		compare,
 		data = {},
 	} = args
 
@@ -58,6 +61,10 @@ function _conditional(args) {
 
 	if (operator === 'regex') {
 		return _operator(data[field], value, flag)
+	}
+
+	if (operator === 'length') {
+		return _operator(data[field], value, compare)
 	}
 
 	return _operator(data[field], value)

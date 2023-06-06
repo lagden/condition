@@ -38,8 +38,8 @@ export function ne(a, b) {
 
 /**
  * Check if the first value is greater than the second value
- * @param {*} a - First value
- * @param {*} b - Second value
+ * @param {number} a - First value
+ * @param {number} b - Second value
  * @returns {boolean} Whether the first value is greater than the second value
  */
 export function gt(a, b) {
@@ -48,8 +48,8 @@ export function gt(a, b) {
 
 /**
  * Check if the first value is greater than or equal to the second value
- * @param {*} a - First value
- * @param {*} b - Second value
+ * @param {number} a - First value
+ * @param {number} b - Second value
  * @returns {boolean} Whether the first value is greater than or equal to the second value
  */
 export function ge(a, b) {
@@ -58,8 +58,8 @@ export function ge(a, b) {
 
 /**
  * Check if the first value is less than the second value
- * @param {*} a - First value
- * @param {*} b - Second value
+ * @param {number} a - First value
+ * @param {number} b - Second value
  * @returns {boolean} Whether the first value is less than the second value
  */
 export function lt(a, b) {
@@ -68,8 +68,8 @@ export function lt(a, b) {
 
 /**
  * Check if the first value is less than or equal to the second value
- * @param {*} a - First value
- * @param {*} b - Second value
+ * @param {number} a - First value
+ * @param {number} b - Second value
  * @returns {boolean} Whether the first value is less than or equal to the second value
  */
 export function le(a, b) {
@@ -102,7 +102,7 @@ export function arrayEquals(a, b) {
 
 /**
  * Check if a value matches a regular expression pattern
- * @param {*} v - Value to match
+ * @param {string} v - Value to match
  * @param {(RegExp|string)} pattern - Regular expression pattern or string pattern
  * @param {string} [flag] - Regular expression flags (optional)
  * @returns {boolean} Whether the value matches the pattern
@@ -118,4 +118,16 @@ export function regex(v, pattern, flag) {
 	}
 
 	return false
+}
+
+/**
+ * Check if the length of a value satisfies a comparison
+ * @param {string} v - Value to check the length of
+ * @param {number} size - Size to compare against
+ * @param {('less'|'greater')} compare - Comparison type ('less' or 'greater')
+ * @returns {boolean} Whether the length of the value satisfies the comparison
+ */
+export function length(v, size, compare) {
+	const m = compare === 'less' ? le : ge
+	return m(String(v).length, size)
 }

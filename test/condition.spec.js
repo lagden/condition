@@ -82,6 +82,18 @@ const conditions = [
 				operator: 'intersection',
 				value: ['blue', 'green', 123],
 			},
+			{
+				field: 'country',
+				operator: 'length',
+				compare: 'less',
+				value: 10,
+			},
+			{
+				field: 'country',
+				operator: 'length',
+				compare: 'greater',
+				value: 3,
+			},
 		],
 	},
 ]
