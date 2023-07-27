@@ -7,6 +7,7 @@ import {
 	lt,
 	le,
 	intersection,
+	difference,
 	arrayEquals,
 	regex,
 	length,
@@ -24,6 +25,7 @@ mapOperators.set('ge', ge)
 mapOperators.set('lt', lt)
 mapOperators.set('le', le)
 mapOperators.set('intersection', intersection)
+mapOperators.set('difference', difference)
 mapOperators.set('arrayEquals', arrayEquals)
 mapOperators.set('regex', regex)
 mapOperators.set('length', length)
@@ -55,7 +57,7 @@ function _conditional(args) {
 		return (data[field] !== undefined) === parseBoolean(value)
 	}
 
-	if (Array.isArray(value) && ['intersection', 'arrayEquals'].includes(operator)) {
+	if (Array.isArray(value) && ['intersection', 'difference', 'arrayEquals'].includes(operator)) {
 		return _operator(data[field], value)
 	}
 
@@ -105,10 +107,10 @@ function _parse(arr, data) {
 			if (a.join_operator) {
 				r.push(_parse([{...a}], data))
 			} else {
-				joinner = c.join_operator
 				r.push(_join(a, data))
 			}
 		}
+		joinner = c.join_operator
 	}
 
 	const m = joinner === 'or' ? 'some' : 'every'

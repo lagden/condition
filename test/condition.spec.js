@@ -12,6 +12,57 @@ const data = {
 	colors: ['red', 'blue'],
 }
 
+const calculo_A = {
+	_seguradoras: ['tokio', 'bradesco'],
+	person_type: 'FISICA',
+	vehicle_class: 'AUTOMOVEL',
+	underfined_driver: false,
+}
+
+const calculo_B = {
+	_seguradoras: ['tokio', 'bradesco'],
+	person_type: 'JURIDICA',
+	vehicle_class: 'REBOQUE',
+	underfined_driver: false,
+}
+
+const calculo_C = {
+	_seguradoras: ['tokio'],
+	person_type: 'FISICA',
+	vehicle_class: 'CAMINHAO',
+	underfined_driver: false,
+}
+
+const calculo_D = {
+	_seguradoras: ['hdi'],
+	person_type: 'FISICA',
+	vehicle_class: 'CAMINHAO',
+	underfined_driver: false,
+}
+
+const conditionsAlternative = [
+	{
+		join_operator: 'and',
+		args: [
+			{
+				field: 'gender',
+				operator: 'eq',
+				value: 'M',
+			},
+		],
+	},
+	{
+		join_operator: 'and',
+		args: [
+			{
+				field: 'age',
+				operator: 'eq',
+				value: 65,
+			},
+		],
+	},
+]
+
 const conditions = [
 	{
 		join_operator: 'and',
@@ -111,6 +162,19 @@ const condition_intersection = [
 	},
 ]
 
+const condition_diff = [
+	{
+		join_operator: '',
+		args: [
+			{
+				field: 'colors',
+				operator: 'difference',
+				value: ['yellow', 'green'],
+			},
+		],
+	},
+]
+
 const condition_assigned = [
 	{
 		join_operator: '',
@@ -176,16 +240,92 @@ const condition_array_equals_false = [
 	},
 ]
 
+/// condition
+const conditionsCarroceria = [
+	{
+		join_operator: 'or',
+		args: [
+			{
+				join_operator: 'and',
+				args: [
+					{
+						field: '_seguradoras',
+						operator: 'intersection',
+						value: ['tokio'],
+					},
+					{
+						join_operator: 'or',
+						args: [
+							{
+								field: 'person_type',
+								operator: 'eq',
+								value: 'JURIDICA',
+							},
+							{
+								field: 'vehicle_class',
+								operator: 'intersection',
+								value: ['CAMINHAO', 'REBOQUE'],
+							},
+							{
+								field: 'underfined_driver',
+								operator: 'eq',
+								value: true,
+							},
+						],
+					},
+				],
+			},
+			{
+				join_operator: 'and',
+				args: [
+					{
+						field: '_seguradoras',
+						operator: 'intersection',
+						value: ['bradesco'],
+					},
+					{
+						join_operator: 'or',
+						args: [
+							{
+								field: 'person_type',
+								operator: 'eq',
+								value: 'JURIDICA',
+							},
+							{
+								field: 'vehicle_class',
+								operator: 'intersection',
+								value: ['CAMINHAO'],
+							},
+						],
+					},
+				],
+			},
+		],
+	},
+]
+
 test('conditions', t => {
 	const fn = condition(conditions)
 	const response = fn(data)
 	t.true(response)
 })
 
+test('conditions alternative', t => {
+	const fn = condition(conditionsAlternative)
+	const response = fn(data)
+	t.false(response)
+})
+
 test('condition_intersection', t => {
 	const fn = condition(condition_intersection)
 	const response = fn(data)
 	t.false(response)
+})
+
+test('condition_diff', t => {
+	const fn = condition(condition_diff)
+	const response = fn(data)
+	t.true(response)
 })
 
 test('intersection', t => {
@@ -241,4 +381,22 @@ test('condition_wrong_operator', t => {
 		condition(condition_wrong_operator)()
 	}, {instanceOf: Error})
 	t.is(error.message, 'Wrong operator')
+})
+
+test('conditions carroceria', t => {
+	const fnA = condition(conditionsCarroceria)
+	const responseA = fnA(calculo_A)
+	t.false(responseA)
+
+	const fnB = condition(conditionsCarroceria)
+	const responseB = fnB(calculo_B)
+	t.true(responseB)
+
+	const fnC = condition(conditionsCarroceria)
+	const responseC = fnC(calculo_C)
+	t.true(responseC)
+
+	const fnD = condition(conditionsCarroceria)
+	const responseD = fnD(calculo_D)
+	t.false(responseD)
 })

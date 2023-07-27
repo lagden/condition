@@ -1,4 +1,16 @@
 /**
+ * Converts a value to an array if it's not already an array.
+ *
+ * If the input value is an array, the function returns the input value itself.
+ * If the input value is not an array, it creates a new array containing the input value as its only element.
+ *
+ * @function
+ * @param {Array|any} v - The value to convert to an array, or an array itself.
+ * @returns {Array} An array representation of the input value, either the input array or a new array containing the input value.
+ */
+const _toArray = v => Array.isArray(v) ? v : [v]
+
+/**
  * Parse a value into a boolean
  * @param {(boolean|string|number)} v - Value to parse
  * @param {boolean} [force=true] - Whether to force parsing or return original value if not parsable
@@ -78,16 +90,28 @@ export function le(a, b) {
 
 /**
  * Check if there is an intersection between two arrays or values
- * @param {(Array|*)} v1 - First array or value
- * @param {(Array|*)} v2 - Second array or value
+ * @param {(Array|any)} v1 - First array or value
+ * @param {(Array|any)} v2 - Second array or value
  * @returns {boolean} Whether there is an intersection between the arrays or values
  */
 export function intersection(v1, v2) {
-	const _toArray = v => Array.isArray(v) ? v : [v]
 	const a = new Set(_toArray(v1))
 	const b = new Set(_toArray(v2))
 	const _intersection = new Set([...a].filter(x => b.has(x)))
 	return _intersection.size > 0
+}
+
+/**
+ * Check if there is a difference between two arrays or values
+ * @param {Array|any} v1 - First array or value to compare.
+ * @param {Array|any} v2 - Second array or value to compare.
+ * @returns {boolean} True if there are elements in `v1` that are not present in `v2`, false otherwise.
+ */
+export function difference(v1, v2) {
+	const a = new Set(_toArray(v1))
+	const b = new Set(_toArray(v2))
+	const _difference = new Set([...a].filter(x => !b.has(x)))
+	return _difference.size > 0
 }
 
 /**

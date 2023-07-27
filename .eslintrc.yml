@@ -6,7 +6,7 @@ parserOptions:
   ecmaVersion: 13
   sourceType: module
 extends:
-  - xo
+  - eslint:recommended
   - plugin:unicorn/recommended
 rules:
   indent: [error, tab]
@@ -31,6 +31,7 @@ rules:
   capitalized-comments: off
   spaced-comment: off
   padding-line-between-statements: off
+  # no-unused-vars: off
   no-new-func: off
   unicorn/filename-case: off
   unicorn/prevent-abbreviations: off
