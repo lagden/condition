@@ -3,7 +3,6 @@
 [![NPM version][npm-img]][npm]
 [![Node.js CI][ci-img]][ci]
 [![Coverage Status][coveralls-img]][coveralls]
-[![XO code style][xo-img]][xo]
 
 [npm-img]:         https://img.shields.io/npm/v/@tadashi/condition.svg
 [npm]:             https://www.npmjs.com/package/@tadashi/condition
@@ -11,8 +10,6 @@
 [ci]:              https://github.com/lagden/condition/actions/workflows/nodejs.yml
 [coveralls-img]:   https://coveralls.io/repos/github/lagden/condition/badge.svg?branch=main
 [coveralls]:       https://coveralls.io/github/lagden/condition?branch=main
-[xo-img]:          https://img.shields.io/badge/code_style-XO-5ed9c7.svg
-[xo]:              https://github.com/sindresorhus/xo
 
 
 Create conditional to validate data.
@@ -23,6 +20,24 @@ Create conditional to validate data.
 ```
 $ npm i @tadashi/condition
 ```
+
+
+## Operators
+
+Operator     | Symbol | Description
+--------     | :----: | -----------
+eq           | ===    | Two values are equal
+ne           | !==    | Two values are not equal
+gt           | >      | The first value is greater than the second value
+ge           | >=     | The first value is greater than or equal to the second value
+lt           | <      | The first value is less than the second value
+le           | <=     | The first value is less than or equal to the second value
+intersection | ∩      | There is an intersection between two arrays
+difference   | ∆      | There is a difference between two arrays
+arrayEquals  | =      | Two arrays are equal
+regex        | -      | The value matches a regular expression pattern
+length       | -      | The length of a value satisfies a comparison
+assigned     | -      | The value was assigned
 
 
 ## Usage
