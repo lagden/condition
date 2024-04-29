@@ -1,6 +1,6 @@
 {
   "name": "@tadashi/condition",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Create conditional to validate data.",
   "type": "module",
   "main": "src/condition.js",
@@ -35,14 +35,20 @@
     "node": ">=18"
   },
   "scripts": {
-    "eslint": "eslint --ignore-path .gitignore .",
-    "pretest": "npm run eslint",
-    "test": "c8 --reporter=text --reporter=text-summary --reporter=lcov ava --tap"
+    "eslint": "eslint .",
+    "check": "prettier --check .",
+    "format": "prettier --write .",
+    "pretest": "run-s check eslint",
+    "test": "c8 --reporter=text-summary --reporter=lcovonly --reporter=cobertura node --test test/*.spec.js"
   },
   "devDependencies": {
-    "ava": "5.3.1",
-    "c8": "8.0.1",
-    "eslint": "8.45.0",
-    "eslint-plugin-unicorn": "48.0.1"
+    "@eslint/eslintrc": "3.0.2",
+    "@eslint/js": "9.1.1",
+    "c8": "9.1.0",
+    "eslint": "9.1.1",
+    "eslint-plugin-unicorn": "52.0.0",
+    "globals": "15.1.0",
+    "npm-run-all": "4.1.5",
+    "prettier": "3.2.5"
   }
 }

@@ -1,17 +1,4 @@
-import {
-	parseBoolean,
-	eq,
-	ne,
-	gt,
-	ge,
-	lt,
-	le,
-	intersection,
-	difference,
-	arrayEquals,
-	regex,
-	length,
-} from './helper.js'
+import {getValueFromObject, parseBoolean, eq, ne, gt, ge, lt, le, intersection, difference, arrayEquals, regex, length} from './helper.js'
 
 /**
  * Mapa dos operadores lógico
@@ -42,34 +29,28 @@ mapOperators.set('assigned', 'assigned')
  * @returns {boolean} Retorna o resultado da condição
  */
 function _conditional(args) {
-	const {
-		field,
-		value,
-		operator,
-		flag,
-		compare,
-		data = {},
-	} = args
+	const {field, value, operator, flag, compare, data = {}} = args
 
 	const _operator = mapOperators.get(operator)
+	const _dataFieldValue = getValueFromObject(data, field)
 
 	if (operator === 'assigned') {
-		return (data[field] !== undefined) === parseBoolean(value)
+		return (_dataFieldValue !== undefined) === parseBoolean(value)
 	}
 
 	if (Array.isArray(value) && ['intersection', 'difference', 'arrayEquals'].includes(operator)) {
-		return _operator(data[field], value)
+		return _operator(_dataFieldValue, value)
 	}
 
 	if (operator === 'regex') {
-		return _operator(data[field], value, flag)
+		return _operator(_dataFieldValue, value, flag)
 	}
 
 	if (operator === 'length') {
-		return _operator(data[field], value, compare)
+		return _operator(_dataFieldValue, value, compare)
 	}
 
-	return _operator(data[field], value)
+	return _operator(_dataFieldValue, value)
 }
 
 /**

@@ -1,4 +1,5 @@
-import test from 'ava'
+import {test} from 'node:test'
+import assert from 'node:assert/strict'
 import condition from '../src/condition.js'
 import {intersection, regex, arrayEquals, parseBoolean} from '../src/helper.js'
 
@@ -38,6 +39,14 @@ const calculo_D = {
 	person_type: 'FISICA',
 	vehicle_class: 'CAMINHAO',
 	underfined_driver: false,
+}
+
+const calculo_driver = {
+	_seguradoras: ['hdi'],
+	person_type: 'FISICA',
+	main_driver: {
+		name: 'Lucas Tadashi',
+	},
 }
 
 const conditionsAlternative = [
@@ -304,99 +313,123 @@ const conditionsCarroceria = [
 	},
 ]
 
-test('conditions', t => {
+/// conditionsDriver
+const conditionsDriver = [
+	{
+		join_operator: '',
+		args: [
+			{
+				field: 'main_driver.name',
+				operator: 'eq',
+				value: 'Lucas Tadashi',
+			},
+		],
+	},
+]
+
+test('conditions', () => {
 	const fn = condition(conditions)
 	const response = fn(data)
-	t.true(response)
+	assert.ok(response)
 })
 
-test('conditions alternative', t => {
+test('conditions alternative', () => {
 	const fn = condition(conditionsAlternative)
 	const response = fn(data)
-	t.false(response)
+	assert.ok(!response)
 })
 
-test('condition_intersection', t => {
+test('condition_intersection', () => {
 	const fn = condition(condition_intersection)
 	const response = fn(data)
-	t.false(response)
+	assert.ok(!response)
 })
 
-test('condition_diff', t => {
+test('condition_diff', () => {
 	const fn = condition(condition_diff)
 	const response = fn(data)
-	t.true(response)
+	assert.ok(response)
 })
 
-test('intersection', t => {
-	t.true(intersection('tadashi', ['tadashi', 'takamoto']))
+test('intersection', () => {
+	assert.ok(intersection('tadashi', ['tadashi', 'takamoto']))
 })
 
-test('condition_assigned', t => {
+test('condition_assigned', () => {
 	const fn = condition(condition_assigned)
 	const response = fn(data)
-	t.false(response)
+	assert.ok(!response)
 })
 
-test('condition_assigned_other', t => {
+test('condition_assigned_other', () => {
 	const fn = condition(condition_assigned_other)
 	const response = fn(data)
-	t.true(response)
+	assert.ok(response)
 })
 
-test('condition_arrayEquals', t => {
+test('condition_arrayEquals', () => {
 	const fn = condition(condition_array_equals)
 	const response = fn(data)
-	t.true(response)
+	assert.ok(response)
 })
 
-test('condition_arrayEquals_false', t => {
+test('condition_arrayEquals_false', () => {
 	const fn = condition(condition_array_equals_false)
 	const response = fn(data)
-	t.false(response)
+	assert.ok(!response)
 })
 
-test('regex', t => {
-	t.true(regex('tadashi', /tadashi/i))
-	t.true(regex('tadashi', 'tadashi'))
-	t.false(regex('tadashi', []))
-	t.true(regex('(11) 988889999', '\\(\\d{2}\\)\\s(\\d{8,9})'))
-	t.true(regex('(11) 988889999', /\(\d{2}\)\s(\d{8,9})/i))
+test('regex', () => {
+	assert.ok(regex('tadashi', /tadashi/i))
+	assert.ok(regex('tadashi', 'tadashi'))
+	assert.ok(!regex('tadashi', []))
+	assert.ok(regex('(11) 988889999', '\\(\\d{2}\\)\\s(\\d{8,9})'))
+	assert.ok(regex('(11) 988889999', /\(\d{2}\)\s(\d{8,9})/i))
 })
 
-test('arrayEquals', t => {
-	t.false(arrayEquals('tadashi', ['tadashi']))
-	t.false(arrayEquals(['tadashi'], 'tadashi'))
-	t.false(arrayEquals(['tadashi'], ['tadashii']))
+test('arrayEquals', () => {
+	assert.ok(!arrayEquals('tadashi', ['tadashi']))
+	assert.ok(!arrayEquals(['tadashi'], 'tadashi'))
+	assert.ok(!arrayEquals(['tadashi'], ['tadashii']))
 })
 
-test('parseBoolean', t => {
-	t.false(parseBoolean('false'))
-	t.is(parseBoolean('tadashi', false), 'tadashi')
-	t.true(parseBoolean('tadashi', true))
+test('parseBoolean', () => {
+	assert.ok(!parseBoolean('false'))
+	assert.equal(parseBoolean('tadashi', false), 'tadashi')
+	assert.ok(parseBoolean('tadashi', true))
 })
 
-test('condition_wrong_operator', t => {
-	const error = t.throws(() => {
-		condition(condition_wrong_operator)()
-	}, {instanceOf: Error})
-	t.is(error.message, 'Wrong operator')
+test('condition_wrong_operator', () => {
+	assert.throws(
+		() => {
+			condition(condition_wrong_operator)()
+		},
+		{
+			message: 'Wrong operator',
+		},
+	)
 })
 
-test('conditions carroceria', t => {
+test('conditions carroceria', () => {
 	const fnA = condition(conditionsCarroceria)
 	const responseA = fnA(calculo_A)
-	t.false(responseA)
+	assert.ok(!responseA)
 
 	const fnB = condition(conditionsCarroceria)
 	const responseB = fnB(calculo_B)
-	t.true(responseB)
+	assert.ok(responseB)
 
 	const fnC = condition(conditionsCarroceria)
 	const responseC = fnC(calculo_C)
-	t.true(responseC)
+	assert.ok(responseC)
 
 	const fnD = condition(conditionsCarroceria)
 	const responseD = fnD(calculo_D)
-	t.false(responseD)
+	assert.ok(!responseD)
+})
+
+test('conditions nested', () => {
+	const fn = condition(conditionsDriver)
+	const response = fn(calculo_driver)
+	assert.ok(response)
 })
