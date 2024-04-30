@@ -1,3 +1,5 @@
+export {getValueFromObject} from '@tadashi/common'
+
 /**
  * Converts a value to an array if it's not already an array.
  *
@@ -155,5 +157,3 @@ export function length(v, size, compare) {
 	const m = compare === 'less' ? le : ge
 	return m(String(v).length, size)
 }
-
-export {getValueFromObject} from '@tadashi/common/src/lib/get-value-from-object.js'

@@ -1,4 +1,19 @@
-import {getValueFromObject, parseBoolean, eq, ne, gt, ge, lt, le, intersection, difference, arrayEquals, regex, length} from './helper.js'
+// prettier-ignore
+import {
+	getValueFromObject,
+	parseBoolean,
+	eq,
+	ne,
+	gt,
+	ge,
+	lt,
+	le,
+	intersection,
+	difference,
+	arrayEquals,
+	regex,
+	length,
+} from './helper.js'
 
 /**
  * Mapa dos operadores lógico

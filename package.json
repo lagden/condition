@@ -1,6 +1,6 @@
 {
   "name": "@tadashi/condition",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Create conditional to validate data.",
   "type": "module",
   "main": "src/condition.js",
