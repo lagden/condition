@@ -1,6 +1,6 @@
 {
   "name": "@tadashi/condition",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "Create conditional to validate data.",
   "type": "module",
   "main": "src/condition.js",
@@ -40,6 +40,9 @@
     "format": "prettier --write .",
     "pretest": "run-s check eslint",
     "test": "c8 --reporter=text-summary --reporter=lcovonly --reporter=cobertura node --test test/*.spec.js"
+  },
+  "dependencies": {
+    "@tadashi/common": "4.4.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "3.0.2",
