@@ -98,7 +98,15 @@ See example below.
 ```js
 import condition, {registerOperator} from '@tadashi/condition'
 
-registerOperator('legalAge', (fieldValue, conditionValue) => {
+registerOperator('legalAge', params => {
+  const {
+    fieldValue,
+    value: conditionValue,
+    // not,
+    // flag,
+    // compare,
+  } = params
+
   try {
     const today = new Date()
     const externalDate = new Date(fieldValue)

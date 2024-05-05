@@ -2,7 +2,15 @@ import {test} from 'node:test'
 import assert from 'node:assert/strict'
 import condition, {registerOperator} from '../src/condition.js'
 
-registerOperator('legalAge', (fieldValue, conditionValue) => {
+registerOperator('legalAge', params => {
+	const {
+		fieldValue,
+		value: conditionValue,
+		// not,
+		// flag,
+		// compare,
+	} = params
+
 	try {
 		const today = new Date()
 		const externalDate = new Date(fieldValue)

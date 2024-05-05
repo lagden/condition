@@ -1,7 +1,7 @@
 import {test} from 'node:test'
 import assert from 'node:assert/strict'
 import condition from '../src/condition.js'
-import {intersection, regex, arrayEquals, parseBoolean} from '../src/helper.js'
+import {parseBoolean} from '../src/helper.js'
 
 const data = {
 	age: 65,
@@ -281,7 +281,7 @@ const condition_belongs_useNot = [
 			{
 				field: 'colors',
 				operator: 'belongs',
-				useNot: true,
+				not: true,
 				value: 'red',
 			},
 		],
@@ -390,10 +390,6 @@ test('condition_diff', () => {
 	assert.ok(response)
 })
 
-test('intersection', () => {
-	assert.ok(intersection('tadashi', ['tadashi', 'takamoto']))
-})
-
 test('condition_assigned', () => {
 	const fn = condition(condition_assigned)
 	const response = fn(data)
@@ -422,26 +418,6 @@ test('condition_arrayEquals_false', () => {
 	const fn = condition(condition_array_equals_false)
 	const response = fn(data)
 	assert.ok(!response)
-})
-
-test('regex', () => {
-	assert.ok(regex('tadashi', /tadashi/i))
-	assert.ok(regex('tadashi', 'tadashi'))
-	assert.ok(!regex('tadashi', []))
-	assert.ok(regex('(11) 988889999', '\\(\\d{2}\\)\\s(\\d{8,9})'))
-	assert.ok(regex('(11) 988889999', /\(\d{2}\)\s(\d{8,9})/i))
-})
-
-test('arrayEquals', () => {
-	assert.ok(!arrayEquals('tadashi', ['tadashi']))
-	assert.ok(!arrayEquals(['tadashi'], 'tadashi'))
-	assert.ok(!arrayEquals(['tadashi'], ['tadashii']))
-})
-
-test('parseBoolean', () => {
-	assert.ok(!parseBoolean('false'))
-	assert.equal(parseBoolean('tadashi', false), 'tadashi')
-	assert.ok(parseBoolean('tadashi', true))
 })
 
 test('condition_wrong_operator', () => {
@@ -488,4 +464,10 @@ test('conditions belongs', () => {
 
 	assert.ok(responseA)
 	assert.ok(!responseB)
+})
+
+test('parseBoolean', () => {
+	assert.ok(!parseBoolean('false'))
+	assert.equal(parseBoolean('tadashi', false), 'tadashi')
+	assert.ok(parseBoolean('tadashi', true))
 })

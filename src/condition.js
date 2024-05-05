@@ -4,13 +4,13 @@ export {registerOperator} from './operator.js'
 /**
  * Performs conditional checks based on the provided arguments.
  *
- * @param {Object} args - The arguments object containing field, value, operator, flag, compare, useNot, and data.
+ * @param {Object} args - The arguments object containing field, value, operator, flag, compare, not, and data.
  * @param {string} args.field - The field to be checked.
  * @param {(string|number|boolean|array)} args.value - The value to be compared.
  * @param {string} args.operator - The operator to use for comparison.
  * @param {string} [args.flag] - The flag for regex comparison.
  * @param {string} [args.compare] - The comparison value for length operator.
- * @param {boolean} [args.useNot=false] - Flag indicating whether to negate the result.
+ * @param {boolean} [args.not=false] - Flag indicating whether to negate the result.
  * @param {Object} [args.data={}] - The data object containing the field value.
  * @returns {boolean} The result of the conditional check.
  * @private
@@ -23,34 +23,27 @@ function _conditional(args) {
 		operator,
 		flag,
 		compare,
-		useNot = false,
-		data = {},
+		not = false,
+		data = {}
 	} = args
 
 	const _operator = mapOperators.get(operator)
-	const _dataFieldValue = getValueFromObject(data, field)
+	const fieldValue = getValueFromObject(data, field)
 
 	if (operator === 'assigned') {
-		return (_dataFieldValue !== undefined) === parseBoolean(value ?? true)
+		return (fieldValue !== undefined) === parseBoolean(value ?? true)
 	}
 
-	if (Array.isArray(value) && Array.isArray(_dataFieldValue) && ['intersection', 'difference', 'arrayEquals'].includes(operator)) {
-		return _operator(_dataFieldValue, value, useNot)
+	// prettier-ignore
+	const _args = {
+		fieldValue,
+		value,
+		not,
+		flag,
+		compare,
 	}
 
-	if (Array.isArray(_dataFieldValue) && ['belongs', 'has', 'includes'].includes(operator)) {
-		return _operator(value, _dataFieldValue, useNot)
-	}
-
-	if (operator === 'regex') {
-		return _operator(_dataFieldValue, value, flag, useNot)
-	}
-
-	if (operator === 'length') {
-		return _operator(_dataFieldValue, value, compare, useNot)
-	}
-
-	return _operator(_dataFieldValue, value)
+	return _operator(_args)
 }
 
 /**
@@ -62,20 +55,17 @@ function _conditional(args) {
  * @param {(string|number|boolean|array)} args.value - The value to be compared in the conditional operation.
  * @param {string} o.flag - The flag for regex comparison.
  * @param {string} o.compare - The comparison value for length operator.
- * @param {boolean} o.useNot - Flag indicating whether to negate the result in the conditional operation.
+ * @param {boolean} o.not - Flag indicating whether to negate the result in the conditional operation.
  * @param {Object} data - The data object containing the field value.
  * @returns {boolean} The result of the conditional operation.
  * @throws {Error} Throws an error if the operator is invalid.
  * @private
  */
 function _join(o, data) {
-	if (mapOperators.has(o.operator)) {
-		return _conditional({
-			...o,
-			data,
-		})
+	if (!mapOperators.has(o.operator)) {
+		throw new Error('Wrong operator')
 	}
-	throw new Error('Wrong operator')
+	return _conditional({...o, data})
 }
 
 /**
@@ -87,21 +77,17 @@ function _join(o, data) {
  * @private
  */
 function _parse(arr, data) {
-	const r = []
+	let result = []
 	let joinner = ''
 	for (const c of arr) {
 		for (const a of c.args) {
-			if (a.join_operator) {
-				r.push(_parse([{...a}], data))
-			} else {
-				r.push(_join(a, data))
-			}
+			result.push(a.join_operator ? _parse([a], data) : _join(a, data))
 		}
 		joinner = c.join_operator
 	}
 
 	const m = joinner === 'or' ? 'some' : 'every'
-	return r[m](v => v)
+	return result[m](v => v)
 }
 
 /**
