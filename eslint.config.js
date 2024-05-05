@@ -59,6 +59,8 @@ export default [
 			'unicorn/prefer-includes': 'off',
 			'unicorn/prefer-query-selector': 'off',
 			'unicorn/prevent-abbreviations': 'off',
+			//
+			// 'no-unused-vars': 'off',
 		},
 	},
 	{

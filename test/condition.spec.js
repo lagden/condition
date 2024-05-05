@@ -191,7 +191,19 @@ const condition_assigned = [
 			{
 				field: 'state',
 				operator: 'assigned',
-				value: 'true',
+			},
+		],
+	},
+]
+
+const condition_assigned_more = [
+	{
+		join_operator: '',
+		args: [
+			{
+				field: 'state',
+				operator: 'assigned',
+				value: false,
 			},
 		],
 	},
@@ -244,6 +256,33 @@ const condition_array_equals_false = [
 				field: 'colors',
 				operator: 'arrayEquals',
 				value: ['red'],
+			},
+		],
+	},
+]
+
+const condition_belongs = [
+	{
+		join_operator: '',
+		args: [
+			{
+				field: 'colors',
+				operator: 'belongs',
+				value: 'red',
+			},
+		],
+	},
+]
+
+const condition_belongs_useNot = [
+	{
+		join_operator: '',
+		args: [
+			{
+				field: 'colors',
+				operator: 'belongs',
+				useNot: true,
+				value: 'red',
 			},
 		],
 	},
@@ -361,6 +400,12 @@ test('condition_assigned', () => {
 	assert.ok(!response)
 })
 
+test('condition_assigned_more', () => {
+	const fn = condition(condition_assigned_more)
+	const response = fn(data)
+	assert.ok(response)
+})
+
 test('condition_assigned_other', () => {
 	const fn = condition(condition_assigned_other)
 	const response = fn(data)
@@ -432,4 +477,15 @@ test('conditions nested', () => {
 	const fn = condition(conditionsDriver)
 	const response = fn(calculo_driver)
 	assert.ok(response)
+})
+
+test('conditions belongs', () => {
+	const fnA = condition(condition_belongs)
+	const responseA = fnA(data)
+
+	const fnB = condition(condition_belongs_useNot)
+	const responseB = fnB(data)
+
+	assert.ok(responseA)
+	assert.ok(!responseB)
 })

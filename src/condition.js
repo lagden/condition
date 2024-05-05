@@ -1,83 +1,72 @@
-// prettier-ignore
-import {
-	getValueFromObject,
-	parseBoolean,
-	eq,
-	ne,
-	gt,
-	ge,
-	lt,
-	le,
-	intersection,
-	difference,
-	arrayEquals,
-	regex,
-	length,
-} from './helper.js'
+import {getValueFromObject, mapOperators, parseBoolean} from './helper.js'
+export {registerOperator} from './operator.js'
 
 /**
- * Mapa dos operadores lógico
- * @constant {Map} mapOperators - Operadores
- */
-const mapOperators = new Map()
-mapOperators.set('eq', eq)
-mapOperators.set('ne', ne)
-mapOperators.set('gt', gt)
-mapOperators.set('ge', ge)
-mapOperators.set('lt', lt)
-mapOperators.set('le', le)
-mapOperators.set('intersection', intersection)
-mapOperators.set('difference', difference)
-mapOperators.set('arrayEquals', arrayEquals)
-mapOperators.set('regex', regex)
-mapOperators.set('length', length)
-mapOperators.set('assigned', 'assigned')
-
-/**
- * Helper para montar a condição
- * @param {Object} args - Argumentos para a condição
- * @param {string} args.field - Nome campo ou propriedade
- * @param {(string|number|boolean|array)} args.value - Valor
- * @param {string} args.operator - Operador lógico
- * @param {string} args.flag - Sinalizador para regex (opcional)
- * @param {Object} args.data - Dados para avaliação (opcional)
- * @returns {boolean} Retorna o resultado da condição
+ * Performs conditional checks based on the provided arguments.
+ *
+ * @param {Object} args - The arguments object containing field, value, operator, flag, compare, useNot, and data.
+ * @param {string} args.field - The field to be checked.
+ * @param {(string|number|boolean|array)} args.value - The value to be compared.
+ * @param {string} args.operator - The operator to use for comparison.
+ * @param {string} [args.flag] - The flag for regex comparison.
+ * @param {string} [args.compare] - The comparison value for length operator.
+ * @param {boolean} [args.useNot=false] - Flag indicating whether to negate the result.
+ * @param {Object} [args.data={}] - The data object containing the field value.
+ * @returns {boolean} The result of the conditional check.
+ * @private
  */
 function _conditional(args) {
-	const {field, value, operator, flag, compare, data = {}} = args
+	// prettier-ignore
+	const {
+		field,
+		value,
+		operator,
+		flag,
+		compare,
+		useNot = false,
+		data = {},
+	} = args
 
 	const _operator = mapOperators.get(operator)
 	const _dataFieldValue = getValueFromObject(data, field)
 
 	if (operator === 'assigned') {
-		return (_dataFieldValue !== undefined) === parseBoolean(value)
+		return (_dataFieldValue !== undefined) === parseBoolean(value ?? true)
 	}
 
-	if (Array.isArray(value) && ['intersection', 'difference', 'arrayEquals'].includes(operator)) {
-		return _operator(_dataFieldValue, value)
+	if (Array.isArray(value) && Array.isArray(_dataFieldValue) && ['intersection', 'difference', 'arrayEquals'].includes(operator)) {
+		return _operator(_dataFieldValue, value, useNot)
+	}
+
+	if (Array.isArray(_dataFieldValue) && ['belongs', 'has', 'includes'].includes(operator)) {
+		return _operator(value, _dataFieldValue, useNot)
 	}
 
 	if (operator === 'regex') {
-		return _operator(_dataFieldValue, value, flag)
+		return _operator(_dataFieldValue, value, flag, useNot)
 	}
 
 	if (operator === 'length') {
-		return _operator(_dataFieldValue, value, compare)
+		return _operator(_dataFieldValue, value, compare, useNot)
 	}
 
 	return _operator(_dataFieldValue, value)
 }
 
 /**
- * Gera a condição para junção de condições
- * @param {Object} o - Objeto contendo as propriedades para gerar uma condição lógica
- * @param {string} o.field - Campo
- * @param {string} o.value - Valor
- * @param {string} o.operator - Operador lógico
- * @param {string} o.flag - Sinalizador para regex (opcional)
- * @param {Object} data - Dados para avaliação
- * @returns {boolean} Retorna o resultado da condição
- * @throws {Error} Lança um erro se o operador estiver incorreto
+ * Executes a conditional operation based on the provided operator and data.
+ *
+ * @param {Object} o - The object containing the operator and other parameters.
+ * @param {string} o.operator - The operator to be executed.
+ * @param {string} o.field - The field to be checked in the conditional operation.
+ * @param {(string|number|boolean|array)} args.value - The value to be compared in the conditional operation.
+ * @param {string} o.flag - The flag for regex comparison.
+ * @param {string} o.compare - The comparison value for length operator.
+ * @param {boolean} o.useNot - Flag indicating whether to negate the result in the conditional operation.
+ * @param {Object} data - The data object containing the field value.
+ * @returns {boolean} The result of the conditional operation.
+ * @throws {Error} Throws an error if the operator is invalid.
+ * @private
  */
 function _join(o, data) {
 	if (mapOperators.has(o.operator)) {
@@ -90,10 +79,12 @@ function _join(o, data) {
 }
 
 /**
- * Analisa e avalia as condições
- * @param {Array} arr - Coleção de condições
- * @param {Object} data - Dados para avaliação
- * @returns {boolean} Retorna o resultado da avaliação das condições
+ * Parses an array of conditional objects and evaluates them against the provided data.
+ *
+ * @param {Array<Object>} arr - The array of conditional objects to parse.
+ * @param {Object} data - The data object containing the field values.
+ * @returns {boolean} The result of evaluating the parsed conditionals against the data.
+ * @private
  */
 function _parse(arr, data) {
 	const r = []
@@ -114,9 +105,10 @@ function _parse(arr, data) {
 }
 
 /**
- * Gera uma função para verificar as condições
- * @param {Array} conditionals - Coleção de condições
- * @returns {function} Retorna uma função para testar as condições com base nos dados fornecidos
+ * Creates a function that evaluates an array of conditional objects against the provided data.
+ *
+ * @param {Array<Array<Object>>} conditionals - The array of arrays of conditional objects to be evaluated.
+ * @returns {function(data: Object): boolean} A function that evaluates the conditionals against the provided data and returns a boolean result.
  */
 export default function condition(conditionals) {
 	return data => _parse(conditionals, data)
