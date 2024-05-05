@@ -76,7 +76,7 @@ ConditionArgument:
     compare:
       type: string
       enum: [eq, ne, gt, ge, greater, lt, le, less]
-    useNot:
+    not:
       type: boolean
       default: false
   required:
