@@ -1,8 +1,8 @@
-import {test} from 'node:test'
+import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import condition, {registerOperator} from '../src/condition.js'
+import condition, { registerOperator } from '../src/condition.js'
 
-registerOperator('legalAge', params => {
+registerOperator('legalAge', (params) => {
 	const {
 		fieldValue,
 		value: conditionValue,

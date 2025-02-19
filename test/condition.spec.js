@@ -1,7 +1,7 @@
-import {test} from 'node:test'
+import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import condition from '../src/condition.js'
-import {parseBoolean} from '../src/helper.js'
+import { parseBoolean } from '../src/helper.js'
 
 const data = {
 	age: 65,

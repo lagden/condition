@@ -1,8 +1,6 @@
 # Condition
 
-[![NPM version][npm-img]][npm]
-[![Node.js CI][ci-img]][ci]
-[![Coverage Status][coveralls-img]][coveralls]
+[![NPM version][npm-img]][npm] [![Node.js CI][ci-img]][ci] [![Coverage Status][coveralls-img]][coveralls]
 
 [npm-img]: https://img.shields.io/npm/v/@tadashi/condition.svg
 [npm]: https://www.npmjs.com/package/@tadashi/condition
@@ -41,54 +39,54 @@ $ npm i @tadashi/condition
 
 ```yaml
 Condition:
-  type: object
-  properties:
-    join_operator:
-      type: string
-      enum: [and, or]
-      default: and
-    args:
-      type: array
-      items:
-        oneOf:
-          - $ref: '#/definitions/ConditionArgument'
-          - $ref: '#/definitions/Condition'
-  required:
-    - join_operator
-    - args
+    type: object
+    properties:
+        join_operator:
+            type: string
+            enum: [and, or]
+            default: and
+        args:
+            type: array
+            items:
+                oneOf:
+                    - $ref: '#/definitions/ConditionArgument'
+                    - $ref: '#/definitions/Condition'
+    required:
+        - join_operator
+        - args
 
 ConditionArgument:
-  type: object
-  properties:
-    field:
-      type: string
-    operator:
-      type: string
-    value:
-      type: any
-      anyOf:
-        - type: boolean
-        - type: string
-        - type: number
-        - type: array
-    flag:
-      type: string
-    compare:
-      type: string
-      enum: [eq, ne, gt, ge, greater, lt, le, less]
-    not:
-      type: boolean
-      default: false
-  required:
-    - field
-    - operator
-    - value
+    type: object
+    properties:
+        field:
+            type: string
+        operator:
+            type: string
+        value:
+            type: any
+            anyOf:
+                - type: boolean
+                - type: string
+                - type: number
+                - type: array
+        flag:
+            type: string
+        compare:
+            type: string
+            enum: [eq, ne, gt, ge, greater, lt, le, less]
+        not:
+            type: boolean
+            default: false
+    required:
+        - field
+        - operator
+        - value
 
 definitions:
-  Condition:
-    $ref: '#/Condition'
-  ConditionArgument:
-    $ref: '#/ConditionArgument'
+    Condition:
+        $ref: '#/Condition'
+    ConditionArgument:
+        $ref: '#/ConditionArgument'
 ```
 
 ## Usage
@@ -96,103 +94,103 @@ definitions:
 See example below.
 
 ```js
-import condition, {registerOperator} from '@tadashi/condition'
+import condition, { registerOperator } from '@tadashi/condition'
 
-registerOperator('legalAge', params => {
-  const {
-    fieldValue,
-    value: conditionValue,
-    // not,
-    // flag,
-    // compare,
-  } = params
+registerOperator('legalAge', (params) => {
+	const {
+		fieldValue,
+		value: conditionValue,
+		// not,
+		// flag,
+		// compare,
+	} = params
 
-  try {
-    const today = new Date()
-    const externalDate = new Date(fieldValue)
-    let age = today.getFullYear() - externalDate.getFullYear()
-    const monthDiff = today.getMonth() - externalDate.getMonth()
+	try {
+		const today = new Date()
+		const externalDate = new Date(fieldValue)
+		let age = today.getFullYear() - externalDate.getFullYear()
+		const monthDiff = today.getMonth() - externalDate.getMonth()
 
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < externalDate.getDate())) {
-      age--
-    }
+		if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < externalDate.getDate())) {
+			age--
+		}
 
-    return age >= conditionValue
-  } catch {
-    return false
-  }
+		return age >= conditionValue
+	} catch {
+		return false
+	}
 })
 
 const data = {
-  user: {
-    name: 'Yumi',
-    birthday: '1990-12-31',
-    gender: 'F',
-    issues: 65,
-  },
-  city: 'São Paulo',
-  country: 'Brazil',
-  phone: '(11) 988889999',
-  hasCar: true,
-  colors: ['red', 'blue'],
+	user: {
+		name: 'Yumi',
+		birthday: '1990-12-31',
+		gender: 'F',
+		issues: 65,
+	},
+	city: 'São Paulo',
+	country: 'Brazil',
+	phone: '(11) 988889999',
+	hasCar: true,
+	colors: ['red', 'blue'],
 }
 
 const conditions = [
-  {
-    join_operator: 'and',
-    args: [
-      {
-        field: 'user.gender',
-        operator: 'eq',
-        value: 'F',
-      },
-      {
-        field: 'user.birthday',
-        operator: 'legalAge',
-        value: 21,
-      },
-      {
-        field: 'user.issues',
-        operator: 'gt',
-        value: 51,
-      },
-      {
-        field: 'phone',
-        operator: 'regex',
-        value: /\(\d{2}\)\s(\d{8,9})/i,
-      },
-      {
-        join_operator: 'or',
-        args: [
-          {
-            field: 'city',
-            operator: 'assigned',
-            value: false,
-          },
-          {
-            field: 'country',
-            operator: 'intersection',
-            value: ['Japan', 'Brazil'],
-          },
-        ],
-      },
-      {
-        field: 'hasCar',
-        operator: 'eq',
-        value: true,
-      },
-      {
-        field: 'colors',
-        operator: 'intersection',
-        value: ['blue', 'green', 123],
-      },
-      {
-        field: 'colors',
-        operator: 'arrayEquals',
-        value: ['red', 'blue'],
-      },
-    ],
-  },
+	{
+		join_operator: 'and',
+		args: [
+			{
+				field: 'user.gender',
+				operator: 'eq',
+				value: 'F',
+			},
+			{
+				field: 'user.birthday',
+				operator: 'legalAge',
+				value: 21,
+			},
+			{
+				field: 'user.issues',
+				operator: 'gt',
+				value: 51,
+			},
+			{
+				field: 'phone',
+				operator: 'regex',
+				value: /\(\d{2}\)\s(\d{8,9})/i,
+			},
+			{
+				join_operator: 'or',
+				args: [
+					{
+						field: 'city',
+						operator: 'assigned',
+						value: false,
+					},
+					{
+						field: 'country',
+						operator: 'intersection',
+						value: ['Japan', 'Brazil'],
+					},
+				],
+			},
+			{
+				field: 'hasCar',
+				operator: 'eq',
+				value: true,
+			},
+			{
+				field: 'colors',
+				operator: 'intersection',
+				value: ['blue', 'green', 123],
+			},
+			{
+				field: 'colors',
+				operator: 'arrayEquals',
+				value: ['red', 'blue'],
+			},
+		],
+	},
 ]
 
 const isValid = condition(conditions)
