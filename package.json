@@ -1,56 +1,66 @@
 {
-	"name": "@tadashi/condition",
-	"version": "1.9.0",
-	"description": "Create conditional to validate data.",
-	"type": "module",
-	"main": "./src/condition.js",
-	"browser": "./src/condition.js",
-	"types": "./types/condition.d.ts",
-	"exports": {
-		".": {
-			"browser": "./src/condition.js",
-			"import": "./src/condition.js",
-			"types": "./types/condition.d.ts"
-		},
-		"./package.json": "./package.json"
-	},
-	"files": [
-		"LICENSE",
-		"README.md",
-		"src",
-		"types"
-	],
-	"author": "Thiago Lagden",
-	"license": "MIT",
-	"homepage": "https://github.com/lagden/condition#readme",
-	"repository": {
-		"type": "git",
-		"url": "git+ssh://git@github.com/lagden/condition.git"
-	},
-	"bugs": {
-		"url": "https://github.com/lagden/condition/issues"
-	},
-	"keywords": [
-		"condition",
-		"lib",
-		"helper",
-		"validation"
-	],
-	"engines": {
-		"node": ">=18"
-	},
-	"publishConfig": {
-		"access": "public"
-	},
-	"scripts": {
-		"tsc": "tsc",
-		"test": "c8 --reporter=text --reporter=text-summary --reporter=lcovonly --reporter=cobertura node --test test/*.spec.js"
-	},
-	"dependencies": {
-		"@tadashi/common": "4.7.2"
-	},
-	"devDependencies": {
-		"c8": "10.1.3",
-		"typescript": "5.7.3"
-	}
+  "name": "@tadashi/condition",
+  "version": "1.9.1",
+  "description": "Create conditional to validate data.",
+  "type": "module",
+  "main": "./src/condition.js",
+  "browser": "./src/condition.js",
+  "types": "./types/condition.d.ts",
+  "exports": {
+    ".": {
+      "browser": "./src/condition.js",
+      "import": "./src/condition.js",
+      "types": "./types/condition.d.ts"
+    },
+    "./src/operator.js": {
+      "browser": "./src/operator.js",
+      "import": "./src/operator.js",
+      "types": "./types/operator.d.ts"
+    },
+    "./src/helper.js": {
+      "browser": "./src/helper.js",
+      "import": "./src/helper.js",
+      "types": "./types/helper.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "src",
+    "types"
+  ],
+  "author": "Thiago Lagden",
+  "license": "MIT",
+  "homepage": "https://github.com/lagden/condition#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/lagden/condition.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lagden/condition/issues"
+  },
+  "keywords": [
+    "condition",
+    "lib",
+    "helper",
+    "validation"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "test": "c8 --reporter=text --reporter=text-summary --reporter=lcovonly --reporter=cobertura node --test test/*.spec.js"
+  },
+  "dependencies": {
+    "@tadashi/common": "4.7.3"
+  },
+  "devDependencies": {
+    "c8": "10.1.3",
+    "typescript": "5.8.2"
+  }
 }
